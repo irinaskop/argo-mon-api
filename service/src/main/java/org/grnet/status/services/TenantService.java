@@ -14,6 +14,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.UriInfo;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.grnet.status.authorizations.dtos.GroupUserResponse;
+import org.grnet.status.authorizations.groups.AuthGroupManagement;
 import org.grnet.status.authorizations.groups.GroupManagement;
 import org.grnet.status.authorizations.service.AccessControlService;
 import org.grnet.status.authorizations.service.AuthGroupSetupService;
@@ -76,7 +77,7 @@ public class TenantService {
     WebApiService webApiService;
 
     @Inject
-    GroupManagement groupManagement;
+    AuthGroupManagement groupManagement;
 
     @Inject
     GroupManagementService groupManagementService;

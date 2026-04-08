@@ -8,6 +8,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.grnet.status.authorizations.dtos.GroupUser;
 import org.grnet.status.authorizations.dtos.GroupUserResponse;
 import org.grnet.status.authorizations.dtos.PartialGroup;
+import org.grnet.status.authorizations.groups.AuthGroupManagement;
 import org.grnet.status.authorizations.groups.GroupManagement;
 import org.grnet.status.authorizations.groups.GroupMembersResponse;
 import org.grnet.status.dtos.pagination.PageResource;
@@ -27,7 +28,7 @@ import java.util.List;
 public class GroupManagementService {
 
     @Inject
-    GroupManagement groupManagement;
+    AuthGroupManagement groupManagement;
 
     @Inject
     TenantRepository tenantRepository;

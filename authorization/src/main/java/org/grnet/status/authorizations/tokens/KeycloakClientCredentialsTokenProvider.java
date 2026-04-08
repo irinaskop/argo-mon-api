@@ -8,7 +8,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.grnet.status.authorizations.clients.KeycloakTokenClient;
 
 @ApplicationScoped
-@IfBuildProfile("prod")
+//@IfBuildProfile("prod")
 public class KeycloakClientCredentialsTokenProvider implements AccessTokenProvider{
 
     @Inject

@@ -11,7 +11,7 @@ import org.jboss.logging.Logger;
 import java.util.*;
 
 @ApplicationScoped
-@IfBuildProfile("prod")
+//@IfBuildProfile("prod")
 public class AuthGroupManagement implements GroupManagement {
 
     private static final Logger LOG = Logger.getLogger(AuthGroupManagement.class);

@@ -3,6 +3,7 @@ package org.grnet.status.authorizations.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.context.ManagedExecutor;
+import org.grnet.status.authorizations.groups.AuthGroupManagement;
 import org.grnet.status.authorizations.groups.GroupManagement;
 import org.jboss.logging.Logger;
 
@@ -18,7 +19,7 @@ public class AuthGroupSetupService {
     private static final Logger LOG = Logger.getLogger(AuthGroupSetupService.class);
 
     @Inject
-    GroupManagement groupManagement;
+    AuthGroupManagement groupManagement;
 
     @Inject
     ManagedExecutor executor;
