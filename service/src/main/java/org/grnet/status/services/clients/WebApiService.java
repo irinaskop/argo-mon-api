@@ -11,10 +11,7 @@ import org.grnet.status.dtos.Status;
 import org.grnet.status.dtos.argo.ArgoWebApiErrorResponse;
 import org.grnet.status.dtos.readiness.WebApiTenantReadiness;
 import org.grnet.status.dtos.report.WebApiReportResponse;
-import org.grnet.status.dtos.status.TenantWebApiEndpointStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiGroupStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiMetricStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiServiceTypeStatusTimelineResponse;
+import org.grnet.status.dtos.status.*;
 import org.grnet.status.dtos.tenant.node.*;
 import org.grnet.status.dtos.tenant.webapi.*;
 import org.grnet.status.dtos.topology.FeedTopologyDto;
@@ -1393,6 +1390,36 @@ public class WebApiService {
             );
         }
 
+    }
+
+    public TenantWebApiMetricStatusDetailsResponse retrieveStatusMetricDetailsByServiceTypeEndpointAndName(String tenantId, String reportName, String groupName, String serviceTypeName, String endpointName, String metricName, String timestamp) {
+
+        try {
+            return argoWebApiClient.getMetricStatusDetailsByServiceTypeEndpointAndName(accessToken, tenantId, reportName, groupName, serviceTypeName, endpointName, metricName, timestamp);
+
+        } catch (WebApplicationException e) {
+
+            var status = e.getResponse().getStatus();
+            var errorMessage = logArgoError(e, "Retrieving Metric Status Details", metricName);
+
+            throw new WebApplicationException(
+                    "Retrieving Metric Status Details... " + errorMessage,
+                    status
+            );
+
+        } catch (RuntimeException e) {
+
+            LOG.errorf(
+                    e,
+                    "Retrieving Metric Status Details failed in Argo Web Api. tenantId=%s, reportName=%s, groupName=%s, serviceTypeName=%s, endpointName=%s, metricName=%s, timestamp=%s",
+                    tenantId, reportName, groupName, serviceTypeName, endpointName, metricName, timestamp
+            );
+
+            throw new WebApplicationException(
+                    "Retrieving Metric Status Details... failed in Argo Web Api",
+                    500
+            );
+        }
     }
 
 

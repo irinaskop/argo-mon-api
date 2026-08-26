@@ -52,11 +52,7 @@ import org.grnet.status.dtos.project.ProjectResponseDto;
 import org.grnet.status.dtos.readiness.WebApiTenantReadiness;
 import org.grnet.status.dtos.report.FullReportResponseDto;
 import org.grnet.status.dtos.report.PartialReportResponseDto;
-import org.grnet.status.dtos.status.StatusGroupResponseDto;
-import org.grnet.status.dtos.status.TenantWebApiEndpointStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiGroupStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiMetricStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiServiceTypeStatusTimelineResponse;
+import org.grnet.status.dtos.status.*;
 import org.grnet.status.dtos.statuspage.StatusPageRequestDto;
 import org.grnet.status.dtos.statuspage.StatusPageResponseDto;
 import org.grnet.status.dtos.statuspage.StatusPageUpdateRequestDto;
@@ -6880,6 +6876,119 @@ public class TenantEndpoint {
         var metricTimeline = statusService.retrieveStatusTimelineMetricByServiceTypeEndpointAndName(id, reportName, groupName, serviceTypeName, endpointName, metricName, startTime, endTime);
 
         return Response.ok(metricTimeline).build();
+    }
+
+    @Tag(name = "Reports")
+    @Operation(
+            summary = "Fetch status result details for a metric under a service type.",
+            description = "Returns the details of a specific metric status result for the specified endpoint, service type, group and report."
+    )
+    @APIResponse(
+            responseCode = "200",
+            description = "Metric status result details fetched successfully.",
+            content = @Content(schema = @Schema(
+                    implementation = TenantWebApiMetricStatusDetailsResponse.class))
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "Invalid request parameters.",
+            content = @Content(schema = @Schema(
+                    implementation = InformativeResponse.class))
+    )
+    @APIResponse(
+            responseCode = "401",
+            description = "User not authenticated.",
+            content = @Content(schema = @Schema(
+                    implementation = InformativeResponse.class))
+    )
+    @APIResponse(
+            responseCode = "403",
+            description = "Not permitted.",
+            content = @Content(schema = @Schema(
+                    implementation = InformativeResponse.class))
+    )
+    @APIResponse(
+            responseCode = "404",
+            description = "Metric status result not found.",
+            content = @Content(schema = @Schema(
+                    implementation = InformativeResponse.class))
+    )
+    @APIResponse(
+            responseCode = "500",
+            description = "Internal server error.",
+            content = @Content(schema = @Schema(
+                    implementation = InformativeResponse.class))
+    )
+    @SecurityRequirement(name = "Authentication")
+    @GET
+    @Path("/{id}/status/{report-name}/groups/{group-name}/service-types/{service-type-name}/endpoints/{endpoint-name}/metrics/{metric-name}/details")
+    @Produces(MediaType.APPLICATION_JSON)
+    @SecuredEndpoint(
+            params = {
+                    @ParamRef(
+                            param = "id",
+                            type = ParamType.PATH,
+                            referTo = TenantResource.class
+                    )
+            }
+    )
+    public Response getStatusMetricDetailsByServiceTypeEndpointAndName(
+            @Parameter(
+                    description = "The ID of the tenant.",
+                    required = true,
+                    example = "42c1152d-e23c-4a19-b51a-b27f1eb7f37f",
+                    schema = @Schema(type = SchemaType.STRING))
+            @PathParam("id")
+            @Valid
+            @NotFoundEntity(repository = TenantRepository.class, message = "There is no Tenant with the following id: ")
+            String id,
+            @Parameter(
+                    name = "report-name",
+                    description = "The name of the report.",
+                    required = true,
+                    example = "CORE")
+            @PathParam("report-name")
+            String reportName,
+            @Parameter(
+                    name = "group-name",
+                    description = "The name of the group.",
+                    required = true,
+                    example = "WIKI")
+            @PathParam("group-name")
+            String groupName,
+            @Parameter(
+                    name = "service-type-name",
+                    description = "The name of the service type.",
+                    required = true,
+                    example = "webportal")
+            @PathParam("service-type-name")
+            String serviceTypeName,
+            @Parameter(
+                    name = "endpoint-name",
+                    description = "The name of the endpoint.",
+                    required = true,
+                    example = "wiki.example.foo_e17eb908-15be-403c-86ec-2fdb8bcfb523")
+            @PathParam("endpoint-name")
+            String endpointName,
+            @Parameter(
+                    name = "metric-name",
+                    description = "The name of the metric.",
+                    required = true,
+                    example = "generic.http.connect")
+            @PathParam("metric-name")
+            String metricName,
+            @Parameter(
+                    name = "timestamp",
+                    description = "Timestamp of the metric status result in UTC.",
+                    example = "2026-08-26T00:00:00Z",
+                    required = true)
+            @QueryParam("timestamp")
+            @NotNull String timestamp) {
+
+        var metricDetails = statusService.retrieveStatusMetricDetailsByServiceTypeEndpointAndName(
+                id, reportName, groupName, serviceTypeName, endpointName, metricName, timestamp);
+
+        return Response.ok(metricDetails).build();
     }
 
     @Tag(name = "Reports")

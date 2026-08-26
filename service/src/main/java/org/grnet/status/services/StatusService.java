@@ -10,11 +10,7 @@ import jakarta.ws.rs.WebApplicationException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.grnet.status.dtos.argo.ArgoStatusGroupsResponse;
-import org.grnet.status.dtos.status.StatusGroupResponseDto;
-import org.grnet.status.dtos.status.TenantWebApiEndpointStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiGroupStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiMetricStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiServiceTypeStatusTimelineResponse;
+import org.grnet.status.dtos.status.*;
 import org.grnet.status.dtos.statuspage.StatusPageConfigDto;
 import org.grnet.status.dtos.statuspage.StatusPageConfigResponse;
 import org.grnet.status.mappers.StatusPageMapper;
@@ -22,6 +18,7 @@ import org.grnet.status.repositories.StatusPageRepository;
 import org.grnet.status.services.clients.ArgoWebApiClient;
 import org.grnet.status.services.clients.WebApiService;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -237,7 +234,10 @@ public class StatusService {
         return webApiService.retrieveStatusTimelineMetricByServiceTypeEndpointAndName(tenantId, reportName, groupName, serviceTypeName, endpointName, metricName, startTime, endTime);
     }
 
+    public TenantWebApiMetricStatusDetailsResponse retrieveStatusMetricDetailsByServiceTypeEndpointAndName(String tenantId, String reportName, String groupName, String serviceTypeName, String endpointName, String metricName, String timestamp) {
 
+        return webApiService.retrieveStatusMetricDetailsByServiceTypeEndpointAndName(tenantId, reportName, groupName, serviceTypeName, endpointName, metricName, timestamp);
+    }
 
     public TenantWebApiEndpointStatusTimelineResponse retrieveStatusTimelineEndpointsByReport(String tenantId, String reportName, String startTime, String endTime) {
 

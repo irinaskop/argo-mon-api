@@ -11,10 +11,7 @@ import org.grnet.status.dtos.profile.metric.MetricProfileResponse;
 import org.grnet.status.dtos.profile.operation.OperationProfileResponse;
 import org.grnet.status.dtos.readiness.WebApiTenantReadiness;
 import org.grnet.status.dtos.report.WebApiReportResponse;
-import org.grnet.status.dtos.status.TenantWebApiMetricStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiEndpointStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiServiceTypeStatusTimelineResponse;
-import org.grnet.status.dtos.status.TenantWebApiGroupStatusTimelineResponse;
+import org.grnet.status.dtos.status.*;
 import org.grnet.status.dtos.tenant.node.*;
 import org.grnet.status.dtos.tenant.webapi.*;
 import org.grnet.status.dtos.topology.*;
@@ -757,6 +754,19 @@ public interface ArgoWebApiClient {
             @PathParam("metric-name") String metricName,
             @QueryParam("start-time") String startTime,
             @QueryParam("end-time") String endTime
+    );
+
+    @GET
+    @Path("/api/v5/status/{report-name}/groups/{group-name}/service-types/{service-type-name}/endpoints/{endpoint-name}/metrics/{metric-name}/details")
+    TenantWebApiMetricStatusDetailsResponse getMetricStatusDetailsByServiceTypeEndpointAndName(
+            @HeaderParam("x-api-key") String accessToken,
+            @HeaderParam("x-tenant-id") String tenantId,
+            @PathParam("report-name") String reportName,
+            @PathParam("group-name") String groupName,
+            @PathParam("service-type-name") String serviceTypeName,
+            @PathParam("endpoint-name") String endpointName,
+            @PathParam("metric-name") String metricName,
+            @QueryParam("timestamp") String timestamp
     );
 
     @GET
